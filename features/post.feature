@@ -5,3 +5,10 @@ Feature: Posts
     When they fill in in the relavant fields
       And they click on the "Create" button
     Then a new post should be created
+
+    Scenario: A visitor views a post
+      Given a post exists
+        When they are on the post page
+      Then they can see the post
+
+
