@@ -7,7 +7,7 @@ class PostsController < ApplicationController
   end
 
   def create
-    Post.create(post_params)
+    current_user.posts.create(post_params)
   end
 
   private
@@ -15,4 +15,5 @@ class PostsController < ApplicationController
   def post_params
     params.require(:post).permit(:body)
   end
+
 end
