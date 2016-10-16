@@ -25,6 +25,8 @@ When(/^they fill in in the relavant fields$/) do
 end
 
 When(/^they click on the "([^"]*)" button$/) do |button|
+  binding.pry
+
   click_button button
 end
 
@@ -48,5 +50,11 @@ end
 Then(/^they can see the updated post$/) do
   expect(page).to have_content @new_description
 end
+
+Then(/^the post is deleted$/) do
+  expect(page).to_not have_content @post
+end
+
+
 
 

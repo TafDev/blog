@@ -25,6 +25,10 @@ class PostsController < ApplicationController
     redirect_to @post
   end
 
+  def destroy
+    @post.destroy
+  end
+
   private
 
   def post_params

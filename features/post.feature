@@ -20,5 +20,13 @@ Feature: Posts
       And they click on the "Save" button
     Then they can see the updated post
 
+    @wip
+  Scenario: A user deletes their post
+    Given a user is signed in
+    And they have a post
+    And they are on the post page
+    When they click on the "Delete" button
+    Then the post is deleted
+
 
 
