@@ -1,5 +1,5 @@
 Feature: Posts
-  Scenario: A user creates a new post with a body
+  Scenario: A user creates a new post with a body Scenario:
     Given they are on the new post page
     When they fill in in the relavant fields
       And they click on the "Create" button
