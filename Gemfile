@@ -36,15 +36,13 @@ gem 'carrierwave', '>= 1.0.0.beta', '< 2.0'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
-group :test do
 
-  # gem 'rspec-rails'
-  # gem 'simplecov', require: false
-  gem 'tsuite'
-end
+# gem 'simplecov', require: false
+gem 'tsuite', group: :test
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'rb-readline'
   gem 'byebug', platform: :mri
   gem 'pry-byebug'
   gem 'faker'
