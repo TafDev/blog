@@ -1,7 +1,13 @@
 Given(/^sample users have been created$/) do
-  User.create(email: "corey@gmail.com", password: "123456")
-  User.create(email: "trevor@gmail.com", password: "123456")
+  @corey = User.create(email: "corey@gmail.com", password: "123456")
+  @trev = User.create(email: "trevor@gmail.com", password: "123456")
 end
+
+Given(/^sample posts have been created$/) do
+      @corey.posts.create(title: "Buttocks", body: "We all love buttocks!")
+      @current_post_count = @corey.posts.count
+end
+
 
 Given(/^They have logged in as "([^"]*)"$/) do |email|
   @user = User.find_by(email: email)
@@ -9,7 +15,12 @@ Given(/^They have logged in as "([^"]*)"$/) do |email|
 end
 
 When(/^They navigate to the "([^"]*)" page$/) do |page|
+  save_and_open_page
   visit get_named_route(page)
+end
+
+When(/^They navigate to the specific "([^"]*)" page$/) do |page|
+  visit get_named_route(page, @corey.posts.last)
 end
 
 When(/^They fill in the "([^"]*)" field with "([^"]*)"$/) do |label, content|
@@ -22,7 +33,8 @@ end
 
 
 Then(/^A new post is created$/) do
-  expect(@user.posts.count).to eq(1)
+  @post = @user.posts.last
+  expect(@user.posts.count).to eq(@current_post_count + 1)
 end
 
 Then(/^They are redirected to the "([^"]*)" page$/) do |page|
@@ -33,9 +45,23 @@ Then(/^The page contains "([^"]*)"$/) do |content|
   expect(page).to have_content(content)
 end
 
+Then(/^They are redirected to the specific "([^"]*)" page$/) do |page|
+  expect(current_path).to eq(get_named_route(page, @corey.posts.last))
+end
+
+
 Then(/^The page contains "([^"]*)" in "([^"]*)"$/) do |content, css_selector|
   within(:css, css_selector) do
     expect(page).to have_content(content)
   end
 end
+
+Then(/^The post is deleted$/) do
+  expect(@user.posts.count).to eq(@current_post_count - 1)
+end
+
+Then(/^The deleted post should not be present$/) do
+  expect(page).to have_content(@post)
+end
+
 
