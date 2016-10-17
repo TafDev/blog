@@ -37,7 +37,7 @@ gem 'carrierwave', '>= 1.0.0.beta', '< 2.0'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-# gem 'simplecov', require: false
+gem 'simplecov', :require => false, :group => :test
 gem 'tsuite', group: :test
 
 group :development, :test do
