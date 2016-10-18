@@ -16,7 +16,7 @@ Feature: Comment
     And sample posts have been created
     When They navigate to the specific "post" page
     And They fill in the "comment_body" field with "I love buttocks!"
-    And They press "ENTER"
+    And They press "ENTER" on "textarea"
     Then The page contains "I love buttocks!"
     And A new comment is created
 
