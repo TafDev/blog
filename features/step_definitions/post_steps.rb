@@ -5,7 +5,7 @@ end
 
 Given(/^sample posts have been created$/) do
       post = @corey.posts.create!(title: "Buttocks", body: "We all love buttocks!")
-      puts "Built post #{post.id}"
+      # puts "Built post #{post.id}"
       @current_post_count = @corey.posts.count
 end
 
@@ -28,7 +28,6 @@ When(/^They fill in the "([^"]*)" field with "([^"]*)"$/) do |label, content|
 end
 
 When(/^They click "([^"]*)"$/) do |this|
-  save_and_open_page
   click_on this
 end
 

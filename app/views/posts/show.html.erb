@@ -8,7 +8,7 @@
 </div>
 <%= form_for [@post, @comment], remote: true do |f| %>
     <div id="comment">
-      <%= f.text_field :body %><br>
+      <%= f.text_area :body %><br>
       <%= f.submit "Comment", :class => "comment"%>
     </div>
 <% end %>
