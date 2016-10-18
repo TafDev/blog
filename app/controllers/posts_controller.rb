@@ -6,7 +6,6 @@ class PostsController < ApplicationController
   end
   def new
     @post = Post.new
-    @post.comment.build
   end
 
   def create
@@ -15,7 +14,7 @@ class PostsController < ApplicationController
   end
 
   def show
-
+    @comment = Comment.new
   end
 
   def edit

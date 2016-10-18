@@ -13,7 +13,7 @@ Feature: Post
     When They navigate to the "new post" page
     And They fill in the "post_title" field with "Corey's big adventure"
     And They fill in the "post_body" field with "Corey goes to the store"
-    And They click "Create"
+    And They click "Create Post"
     Then A new post is created
     And They are redirected to the "posts" page
     And The page contains "Corey goes to the store"

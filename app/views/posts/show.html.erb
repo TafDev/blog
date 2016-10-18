@@ -1,4 +1,31 @@
 <p><%= @post.title %></p>
 <p><%= @post.body %></p>
+<div class="comments">
+  <% @post.comments.each do |comment| %>
+    <%= comment.body %><br>
+    <%= comment.user.email unless comment.user.nil? %>
+  <% end %>
+</div>
+<%= form_for [@post, @comment], remote: true do |f| %>
+    <div id="comment">
+      <%= f.text_field :body %><br>
+      <%= f.submit "Comment", :class => "comment"%>
+    </div>
+<% end %>
+
 <%= button_to "Edit this post", edit_post_path(@post), method: :get %>
 <%= button_to "Delete post", post_path(@post), method: :delete %>
+
+<script>
+  var form = $("#new_comment");
+  form.on("keydown", function(e) {
+    if (e.keyCode == 13)
+      $(".comment")[0].click();
+  }).on("ajax:success", function (event, data) {
+    console.log(data);
+    var newDiv = document.createElement("div");
+    newDiv.className = "comment";
+    newDiv.innerHTML = data.body + "<br>" + data.user_id;
+    $(".comments").append(newDiv);
+  });
+</script>

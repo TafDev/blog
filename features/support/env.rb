@@ -42,7 +42,7 @@ ActionController::Base.allow_rescue = false
 # Remove/comment out the lines below if your app doesn't have a database.
 # For some databases (like MongoDB and CouchDB) you may need to use :truncation instead.
 begin
-  DatabaseCleaner.strategy = :transaction
+  DatabaseCleaner.strategy = :truncation # :transaction
 rescue NameError
   raise "You need to add database_cleaner to your Gemfile (in the :test group) if you wish to use it."
 end
@@ -69,12 +69,8 @@ Cucumber::Rails::Database.javascript_strategy = :truncation
 
 
 ActionDispatch::Integration::Session.class_eval do
-  def get_named_route(name, obj=nil)
-    if obj
-      send(name.gsub(' ', '_') + '_path', obj)
-    else
-      send(name.gsub(' ', '_') + '_path')
-    end
+  def get_named_route(name, *args)
+    send(name.gsub(' ', '_') + '_path', *args)
   end
 end
 

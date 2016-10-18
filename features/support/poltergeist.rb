@@ -1,5 +1,4 @@
 require 'capybara/poltergeist'
-
 # Allow individual cucumber scenarios to work with Poltergeist instead of selenium
 Around('@poltergeist') do |scenario, block|
   @capy_def_driver = Capybara.default_driver
@@ -11,4 +10,9 @@ Around('@poltergeist') do |scenario, block|
     # Reset it back to the original
   Capybara.default_driver = @capy_def_driver # Usually :rack_test
   Capybara.javascript_driver = @capy_js_driver # Usually :selenium
+
 end
+
+options = {:js_errors => false}
+
+

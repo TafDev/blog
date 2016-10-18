@@ -4,7 +4,8 @@ Given(/^sample users have been created$/) do
 end
 
 Given(/^sample posts have been created$/) do
-      @corey.posts.create(title: "Buttocks", body: "We all love buttocks!")
+      post = @corey.posts.create!(title: "Buttocks", body: "We all love buttocks!")
+      puts "Built post #{post.id}"
       @current_post_count = @corey.posts.count
 end
 
@@ -15,12 +16,11 @@ Given(/^They have logged in as "([^"]*)"$/) do |email|
 end
 
 When(/^They navigate to the "([^"]*)" page$/) do |page|
-  save_and_open_page
   visit get_named_route(page)
 end
 
 When(/^They navigate to the specific "([^"]*)" page$/) do |page|
-  visit get_named_route(page, @corey.posts.last)
+  visit get_named_route(page, @corey.posts.last.id)
 end
 
 When(/^They fill in the "([^"]*)" field with "([^"]*)"$/) do |label, content|
@@ -28,6 +28,7 @@ When(/^They fill in the "([^"]*)" field with "([^"]*)"$/) do |label, content|
 end
 
 When(/^They click "([^"]*)"$/) do |this|
+  save_and_open_page
   click_on this
 end
 
