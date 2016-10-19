@@ -17,8 +17,12 @@ class CommentsController < ApplicationController
   end
 
   def destroy
-    @comment.destroy
-    render json: {success: true}
+    if @comment.nil?
+      render json: {success: false}, status: 400
+    else
+      @comment.destroy
+      render json: {success: true}
+    end
   end
 
   private

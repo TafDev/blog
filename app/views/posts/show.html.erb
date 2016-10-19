@@ -20,26 +20,30 @@
 
 <div class="comments">
   <% @post.comments.order(:id).each do |comment| %>
-    <%= comment.user.email unless comment.user.nil? %><br>
-      <div id="comment-body<%= comment.id %>" class="comment-body">
-        <%= comment.body %>
-      </div>
+    <div id="comment<%= comment.id %>">
+      <%= comment.user.email unless comment.user.nil? %><br>
+        <div id="comment-body<%= comment.id %>" class="comment-body">
+          <%= comment.body %>
+        </div>
 
-    <div id="comment-form<%= comment.id %>" class="textarea-comment">
-      <%= form_for [@post, comment], remote: true do |f| %>
-          <div id="comment">
-            <%= f.text_area :body %><br>
-            <%= f.submit "Save", :class => "secret-submit-btn"%>
-          </div>
-      <% end %>
-    </div>
+      <div id="comment-form<%= comment.id %>" class="textarea-comment">
+        <%= form_for [@post, comment], remote: true do |f| %>
+            <div id="comment">
+              <%= f.text_area :body %><br>
+              <%= f.submit "Save", :class => "secret-submit-btn", :style => "display: none"%>
+            </div>
+        <% end %>
+      </div>
 
       <% if comment.user == current_user %>
         <div>
           <%= button_tag "Edit comment", class: "edit btn btn-success btn-sm", "x-id": comment.id %>
-          <%= button_tag "Delete", class: "btn btn-danger btn-sm" %>
+          <%= button_to "Delete", post_comment_path(@post, comment), {remote: true, method: :delete,
+                               class: "delete btn btn-danger btn-sm", "x-id": comment.id}
+          %>
         </div>
       <% end %>
+    </div>
   <% end %>
 </div>
 
@@ -47,7 +51,7 @@
 
 
 <script>
-  $(".edit").on("click", function() {
+  $(".edit").on("click", function () {
     var id = parseInt($(this).attr("x-id"));
     console.log(id);
     $("#comment-body" + id.toString()).fadeOut();
@@ -55,11 +59,17 @@
     $(this).fadeOut();
   });
 
+  var toDeleteId;
 
-
+  $(".delete").on("click", function () {
+    toDeleteId = parseInt($(this).attr("x-id"));
+  }).parent().on("ajax:success", function (data){
+    console.log(data);
+    $("#comment" + toDeleteId.toString()).remove();
+  });
 
   var form = $("#new_comment");
-  form.on("keydown", function(e) {
+  form.on("keydown", function (e) {
     if (e.keyCode == 13)
       $(".comment")[0].click();
   }).on("ajax:success", function (event, data) {
@@ -71,15 +81,15 @@
   });
 
   form = $(".textarea-comment");
-  form.on("keydown", function(e) {
+  form.on("keydown", function (e) {
     if (e.keyCode == 13) {
       $(this).find("input[type=submit]")[0].click();
     }
   }).on ("ajax:success", function (event, data) {
     console.log(data);
     var id = data.id.toString();
-    $("#comment-body" + id).html(data.body);
-    $("#comment-body" + id).fadeIn();
+    $("#comment-body" + id).html(data.body).fadeIn();
+//    $("#comment-body" + id).fadeIn(); merges this method above instead of duplication jquery selectors and it works
     $("#comment-form" + id).fadeOut();
     console.log("*[x-id=" + id + "]");
     $("*[x-id=" + id + "]").fadeIn();
