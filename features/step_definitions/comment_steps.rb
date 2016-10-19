@@ -16,3 +16,23 @@ end
 Then(/^A new comment is created$/) do
   expect(@trev.comments.count).to eq(1)
 end
+
+When(/^sample comments have been created$/) do
+  @comment = @post2.comments.create!(body: "i hate this comment", user: @trev)
+end
+
+When(/^The comment belongs to the signed in user$/) do
+  expect(@comment.user).to eq(@trev)
+end
+
+When(/^They click "([^"]*)" on "([^"]*)"$/) do |button, css_selector|
+  within(:css, css_selector) do
+    click_on button
+  end
+end
+
+Then(/^The comment is updated$/) do
+  expect(page).to have_content("I love biiiiiiiig butts and i cannot lie!")
+end
+
+

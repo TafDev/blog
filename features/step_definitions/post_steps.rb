@@ -1,10 +1,11 @@
 Given(/^sample users have been created$/) do
-  @corey = User.create(email: "corey@gmail.com", password: "123456")
-  @trev = User.create(email: "trevor@gmail.com", password: "123456")
+  @corey = User.create!(email: "corey@gmail.com", password: "123456")
+  @trev = User.create!(email: "trevor@gmail.com", password: "123456")
 end
 
 Given(/^sample posts have been created$/) do
-      post = @corey.posts.create!(title: "Buttocks", body: "We all love buttocks!")
+      @post = @corey.posts.create!(title: "Buttocks", body: "We all love buttocks!")
+      @post2 = @corey.posts.create!(title: "S", body: "We all love buttocks!")
       # puts "Built post #{post.id}"
       @current_post_count = @corey.posts.count
 end
@@ -27,7 +28,13 @@ When(/^They fill in the "([^"]*)" field with "([^"]*)"$/) do |label, content|
   fill_in label, with: content
 end
 
-When(/^They click "([^"]*)"$/) do |this|
+When(/^They click "([^"]*)"(?: in "([^"]*)"|)$/) do |this, css_selector|
+  css_selector ||= 'body'
+  if this == "Edit Comment"
+    within(:css, css_selector) do
+      click_on this
+    end
+  end
   click_on this
 end
 
@@ -61,7 +68,7 @@ Then(/^The post is deleted$/) do
 end
 
 Then(/^The deleted post should not be present$/) do
-  expect(page).to have_content(@post)
+  expect(page).to_not have_content(@post)
 end
 
 
