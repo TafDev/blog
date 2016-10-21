@@ -5,7 +5,7 @@
     <%= link_to post.title, post %><br>
       <%= post.body %><br>
       <% person = post.likes.count == 1 ? "person" : "people" %><br>
-      <p><%= "#{post.likes.count} #{person}"%> likezies this</p>
+      <p><%= "<span id=\"like#{post.id}\">#{post.likes.count}</span> #{person}".html_safe%> likezies this</p>
       <hr>
   <% end %>
 </div>
