@@ -32,6 +32,7 @@ gem "awesome_print", require:"ap"
 gem 'rails-erd'
 gem 'bootstrap', '~> 4.0.0.alpha4'
 gem 'devise'
+gem 'font-awesome-sass'
 gem 'carrierwave', '>= 1.0.0.beta', '< 2.0'
 gem 'simplecov', :require => false, :group => :test
 gem 'tsuite', group: :test
@@ -44,8 +45,10 @@ group :development, :test do
   gem 'byebug', platform: :mri
   gem 'pry-byebug'
   gem 'faker'
-
+  gem "letter_opener"
+  gem 'launchy-rails', '~> 0.0.1'
 end
+
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
@@ -57,6 +60,7 @@ group :development do
   gem "better_errors"
   gem "binding_of_caller"
   gem 'rails_layout'
+
 
 end
 

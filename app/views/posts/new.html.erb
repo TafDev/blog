@@ -1,2 +1,8 @@
-<%= render 'post' %>
+<h1 align="center">Create New Post</h1>
+<hr class="hr">
+<% if user_signed_in? %>
+  <%= render 'post' %>
+<% else %>
+  <h2>You need to sign in to create new posts</h2>
+<% end %>
 

@@ -1,1 +1,12 @@
-<%= render @posts %>
+<div class="post">
+  <h1>My Posts</h1>
+  <hr class="hr">
+<% current_user.posts.each do |post| %>
+    <%= link_to post.title, post %><br>
+    <%= post.body %><br>
+    <% person = post.likes.count == 1 ? "person" : "people" %><br>
+    <p><%= "#{post.likes.count} #{person}"%> likezies this</p>
+    <hr>
+<% end  %>
+  </div>
+

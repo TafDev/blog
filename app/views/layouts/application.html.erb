@@ -4,7 +4,7 @@
     <title>Blog</title>
     <%= csrf_meta_tags %>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js" integrity="sha384-Plbmg8JY28KFelvJVai01l8WyZzrYWG825m+cZ0eDDS1f7d/js6ikvy1+X+guPIB" crossorigin="anonymous"></script>
-
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
   </head>
@@ -13,17 +13,25 @@
       <li class="nav-item active">
         <%= link_to "All posts", posts_path, class: "nav-link"%>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">My Posts</a>
-        <%#= link_to "My posts", current_user.posts, class: "nav-link"%>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Create New Post</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">My Account</a>
-      </li>
+      <% if user_signed_in? %>
+        <li class="nav-item">
+          <%= link_to "My posts", user_posts_path(current_user), class: "nav-link"%>
+        </li>
+        <li class="nav-item">
+          <%= link_to "Create new Post", new_post_path,  class: "nav-link"%>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">My Account</a>
+        </li>
+      <% end %>
     </ul>
+    <div class="logout">
+      <% if user_signed_in? %>
+        <%= button_to "Logout", destroy_user_session_path, class: "btn btn-danger", method: :delete %>
+      <% else %>
+        <%= button_to "Login", user_session_path, class: "btn btn-success" %>
+      <% end %>
+    </div>
   </nav>
   <body>
 

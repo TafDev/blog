@@ -1,7 +1,11 @@
 <div class="post">
-  <% @posts.each do |post| %>
+  <h1>All Posts</h1>
+  <hr class="hr">
+  <% @posts.order(:created_at => :desc).each do |post| %>
     <%= link_to post.title, post %><br>
-    <%= post.body %>
+      <%= post.body %><br>
+      <% person = post.likes.count == 1 ? "person" : "people" %><br>
+      <p><%= "#{post.likes.count} #{person}"%> likezies this</p>
       <hr>
   <% end %>
 </div>

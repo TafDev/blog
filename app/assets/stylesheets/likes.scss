@@ -1,0 +1,25 @@
+// Place all the styles related to the likes controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.like {
+  cursor: pointer;
+  color: red;
+}
+
+.post {
+  p {
+    color: #908e8d;
+    font-size: .9em;
+    font-style: italic;
+  }
+  h1 {
+    text-align: center;
+  }
+}
+
+.hr {
+  color: #00ff08;
+  width: 20%;
+  border: .1em solid #00aaff;
+}

@@ -1,56 +1,127 @@
 <style>
-  .textarea-comment {
-    display: none;
-  }
+.textarea-comment {
+  display: none;
+}
+
+
 </style>
 
 <h4><%= @post.title %></h4>
 <p><%= @post.body %></p>
-
-<%= form_for [@post, @comment], remote: true do |f| %>
-    <div id="comment">
-      <%= f.text_area :body %><br>
-      <%= f.submit "Comment", :class => "comment"%>
-    </div>
+<%#= link_to '<i class="fa fa-heart-o"></i>'.html_safe, class: 'like', remote: true %>
+<% unless current_user.likes.find_by(post_id: @post.id).nil? %>
+    <i class="like fa fa-heart" aria-hidden="true", id="<%=@post.id %>"></i>
+<% else %>
+    <i class="like fa fa-heart-o" aria-hidden="true", id="<%=@post.id %>"></i>
 <% end %>
 
-<%= button_to "Edit this post", edit_post_path(@post), method: :get %>
-<%= button_to "Delete post", post_path(@post), method: :delete %>
+<br>
+<br>
 
-
-<div class="comments">
-  <% @post.comments.order(:id).each do |comment| %>
-    <div id="comment<%= comment.id %>">
-      <%= comment.user.email unless comment.user.nil? %><br>
-        <div id="comment-body<%= comment.id %>" class="comment-body">
-          <%= comment.body %>
-        </div>
-
-      <div id="comment-form<%= comment.id %>" class="textarea-comment">
-        <%= form_for [@post, comment], remote: true do |f| %>
-            <div id="comment">
-              <%= f.text_area :body %><br>
-              <%= f.submit "Save", :class => "secret-submit-btn", :style => "display: none"%>
-            </div>
-        <% end %>
-      </div>
-
-      <% if comment.user == current_user %>
-        <div>
-          <%= button_tag "Edit comment", class: "edit btn btn-success btn-sm", "x-id": comment.id %>
-          <%= button_to "Delete", post_comment_path(@post, comment), {remote: true, method: :delete,
-                               class: "delete btn btn-danger btn-sm", "x-id": comment.id}
-          %>
-        </div>
-      <% end %>
+<% if @post.user == current_user %>
+    <div class="post-btns">
+      <%= button_to "Edit this post", edit_post_path(@post), method: :get, class: "btn btn-info"%>
+      <%= button_to "Delete post", post_path(@post), method: :delete, class: "btn btn-danger" %>
     </div>
-  <% end %>
+    <br>
+<% end %>
+<br>
+<br>
+<div class="row">
+  <div class="col-sm-6">
+    <h5> Leave Comments</h5>
+
+    <hr class="hr">
+
+
+    <%= form_for [@post, @comment], remote: true do |f| %>
+        <div id="comment">
+          <%= f.text_area :body, class: "form-control" %><br>
+          <%= f.submit "Comment", :class => "comment btn btn-default"%>
+        </div>
+    <% end %>
+  </div>
+
+  <div class="col-sm-6">
+    <h5>Comments</h5>
+    <hr class="hr">
+    <br>
+    <br>
+    <div class="comments">
+      <% @post.comments.order(:created_at => :desc).each do |comment| %>
+          <div id="comment<%= comment.id %>">
+            <p><%= comment.user.email.split("@")[0] unless comment.user.nil?%><br></p>
+            <%= image_tag gravatar_url("#{current_user.email}", 64), alt: "" %>
+            <div id="comment-body<%= comment.id %>" class="comment-body">
+              <%= comment.body %>
+            </div>
+
+            <div id="comment-form<%= comment.id %>" class="textarea-comment">
+              <%= form_for [@post, comment], remote: true do |f| %>
+                  <div id="comment">
+                    <div class="col-xs-8">
+                      <%= f.text_area :body, class: "form-control"%><br>
+                      <%= f.submit "Save", :class => "secret-submit-btn", :style => "display: none"%>
+                    </div>
+                  </div>
+              <% end %>
+            </div>
+            <% if comment.user == current_user %>
+                <div class="comment-btns">
+                  <%= button_tag "Edit comment", class: "edit btn btn-info btn-sm", "x-id": comment.id %>
+                  <%= button_to "Delete", post_comment_path(@post, comment), {remote: true, method: :delete,
+                                                                              class: "delete btn btn-danger btn-sm", "x-id": comment.id}
+                  %>
+                </div>
+            <% end %>
+            <hr class="clear">
+
+          </div>
+    <% end %>
+
+    </div>
+  </div>
 </div>
 
 
+<br>
+<hr>
+<br>
+<br>
 
 
 <script>
+
+//  var id;
+  var csrf = $("meta[name=csrf-token]").attr("content");
+
+
+  $(".like").on("click", function () {
+    var id = this.id;
+    var click = this;
+    $.ajax({
+      url: "/likes",
+      type: "post",
+      data: {
+        like: {
+          authenticity_token: csrf,
+          post_id: id
+        }
+      },
+      success: function (response) {
+        var change = click.className;
+        console.log(response);
+        if (response.success == "liked") {
+          var newClass = change.substring(0, change.lastIndexOf("-"));
+          click.className = newClass;
+        }
+        else {
+          click.className = change + "-o";
+        }
+      }
+    });
+  });
+
   $(".edit").on("click", function () {
     var id = parseInt($(this).attr("x-id"));
     console.log(id);

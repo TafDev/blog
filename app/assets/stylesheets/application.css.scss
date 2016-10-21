@@ -15,4 +15,54 @@
  */
 
 @import "bootstrap";
+//@import "font-awesome-sprockets";
+//@import "font-awesome";
 @import "comments";
+@import "likes";
+
+.post-btns {
+  float: left;
+  .button_to {
+    display: inline-block;
+    text-align: right;
+  }
+}
+
+.logout {
+  float: right;
+}
+
+//.username {
+//  color: red;
+//}
+
+.comments {
+  img {
+    float: left;
+    padding-right: 2em;
+  }
+  p {
+    color: #908e8d;
+    display: inline-block;
+  }
+}
+
+.plus {
+  cursor: pointer;
+  border: 1px solid black;
+  padding: 10px;
+  border-radius: 100%;
+  text-align: center;
+}
+
+.clear {
+  clear: both;
+  margin-top: 3em;
+}
+
+.row {
+  .hr {
+    float: left;
+    clear: both;
+  }
+}
